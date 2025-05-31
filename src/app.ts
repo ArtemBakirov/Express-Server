@@ -1,23 +1,31 @@
 import express from "express";
-import logger from "morgan";
-import * as path from "path";
+import * as process from "node:process";
+import mongoose from "mongoose";
+import cors from "cors";
+import dotenv from "dotenv";
+dotenv.config();
 
-import { errorHandler, errorNotFoundHandler } from "./middlewares/errorHandler";
-
-// Routes
-import { index } from "./routes/index";
+import QuotesRouter from "./routes/quotes.router";
+import YoutubeRouter from "./routes/youtube.router";
 // Create Express server
 export const app = express();
 
+app.use(cors({
+    origin: "http://localhost:3333",
+}));
+app.use(express.json());
+
+
+// connect dataBase
+console.log("mongo URI", process.env.MONGO_URI);
+mongoose.connect(process.env.MONGO_URI).then(() => console.log("✅ MongoDB connected"))
+    .catch(err => console.error("❌ Mongo error:", err));
+
 // Express configuration
 app.set("port", process.env.PORT || 3000);
-app.set("views", path.join(__dirname, "../views"));
-app.set("view engine", "pug");
+app.use("/api/quotes", QuotesRouter);
+app.use("/api/music", YoutubeRouter);
 
-app.use(logger("dev"));
-
-app.use(express.static(path.join(__dirname, "../public")));
-app.use("/", index);
-
-app.use(errorNotFoundHandler);
-app.use(errorHandler);
+app.get("/", (req, res) => {
+    res.status(200).json({ message: "Hello World!" });
+});
