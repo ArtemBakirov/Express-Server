@@ -7,6 +7,7 @@ dotenv.config();
 
 import QuotesRouter from "./routes/quotes.router";
 import YoutubeRouter from "./routes/youtube.router";
+import PlaylistRouter from "./routes/playlist.router";
 // Create Express server
 export const app = express();
 
@@ -25,6 +26,7 @@ mongoose.connect(process.env.MONGO_URI).then(() => console.log("✅ MongoDB conn
 app.set("port", process.env.PORT || 3000);
 app.use("/api/quotes", QuotesRouter);
 app.use("/api/music", YoutubeRouter);
+app.use("/api/playlists", PlaylistRouter);
 
 app.get("/", (req, res) => {
     res.status(200).json({ message: "Hello World!" });
