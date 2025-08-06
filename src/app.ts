@@ -8,11 +8,12 @@ dotenv.config();
 import QuotesRouter from "./routes/quotes.router";
 import YoutubeRouter from "./routes/youtube.router";
 import PlaylistRouter from "./routes/playlist.router";
+import ArtistInfoRouter from "./routes/artistInfo.router";
 // Create Express server
 export const app = express();
 
 app.use(cors({
-    origin: "http://localhost:3333",
+    origin: "https://bastyonmusic.netlify.app",
 }));
 app.use(express.json());
 
@@ -27,6 +28,7 @@ app.set("port", process.env.PORT || 3000);
 app.use("/api/quotes", QuotesRouter);
 app.use("/api/music", YoutubeRouter);
 app.use("/api/playlists", PlaylistRouter);
+app.use("/api/artistInfo", ArtistInfoRouter);
 
 app.get("/", (req, res) => {
     res.status(200).json({ message: "Hello World!" });
