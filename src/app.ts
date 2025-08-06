@@ -15,6 +15,9 @@ export const app = express();
 app.use(cors({
     origin: "https://bastyonmusic.netlify.app",
 }));
+app.options("*", cors({
+    origin: "https://bastyonmusic.netlify.app",
+}));
 app.use(express.json());
 
 
